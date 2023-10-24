@@ -323,6 +323,11 @@ public class FrmPersonas extends javax.swing.JFrame {
             pst.setString(4, String.valueOf(cboCiudad.getSelectedItem()));
             pst.setString(5, String.valueOf(cboProfesion.getSelectedItem()));
 
+            pst.executeUpdate();
+            mensajeOK("Registro Añadido");
+            updateDB();
+            limpiar();
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
