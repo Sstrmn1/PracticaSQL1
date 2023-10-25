@@ -43,6 +43,7 @@ public class FrmPersonas extends javax.swing.JFrame {
         modeloTabla = new DefaultTableModel(datos, cabecera);
         tblPersonas.setModel(modeloTabla);
         deshabilitar();
+        updateDB();
     }
 
     /**
@@ -72,7 +73,12 @@ public class FrmPersonas extends javax.swing.JFrame {
         btnEliminar.setEnabled(false);
     }
 
-    public void updateDB() {
+    private void habilitar() {
+        btnEditar.setEnabled(true);
+        btnEliminar.setEnabled(true);
+    }
+
+    private void updateDB() {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -90,12 +96,12 @@ public class FrmPersonas extends javax.swing.JFrame {
                 Vector rowData = new Vector();
 
                 for (i = 1; i <= q; i++) {
-                    rowData.add(rs.getShort("idPersona"));
-                    rowData.add(rs.getShort("Nombre"));
-                    rowData.add(rs.getShort("DNI"));
-                    rowData.add(rs.getShort("Telefono"));
-                    rowData.add(rs.getShort("Ciudad"));
-                    rowData.add(rs.getShort("Profesion"));
+                    rowData.add(rs.getString("idPersona"));
+                    rowData.add(rs.getString("Nombre"));
+                    rowData.add(rs.getString("DNI"));
+                    rowData.add(rs.getString("Telefono"));
+                    rowData.add(rs.getString("Ciudad"));
+                    rowData.add(rs.getString("Profesion"));
                 }
                 modeloTabla.addRow(rowData);
             }
@@ -160,6 +166,11 @@ public class FrmPersonas extends javax.swing.JFrame {
         jLabel5.setText("Telefono");
 
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setText("Eliminar");
 
@@ -261,6 +272,11 @@ public class FrmPersonas extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblPersonas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblPersonasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblPersonas);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -327,8 +343,13 @@ public class FrmPersonas extends javax.swing.JFrame {
             mensajeOK("Registro Añadido");
             updateDB();
             limpiar();
+            deshabilitar();
 
-        } catch (Exception e) {
+        } catch (ClassNotFoundException e) {
+            java.util.logging.Logger.getLogger(FrmPersonas.class.getName()).log(java.util.logging.Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
+        } catch (SQLException e) {
+            java.util.logging.Logger.getLogger(FrmPersonas.class.getName()).log(java.util.logging.Level.SEVERE, null, e);
             JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed
@@ -336,6 +357,49 @@ public class FrmPersonas extends javax.swing.JFrame {
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
         limpiar();        // TODO add your handling code here:
     }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            sqlConn = DriverManager.getConnection(DATACONNECTION, USERNAME, PASSWORD);
+            pst = sqlConn.prepareStatement("update persona set Nombre=?, DNI=?, Telefono=?, Ciudad=?, Profesion=? where idPersona=?");
+            pst.setString(1, txtNombre.getText());
+            pst.setString(2, txtDNI.getText());
+            pst.setString(3, txtTelefono.getText());
+            pst.setString(4, String.valueOf(cboCiudad.getSelectedItem()));
+            pst.setString(5, String.valueOf(cboProfesion.getSelectedItem()));
+
+            // Establecemos el valor de idPersona para la cláusula WHERE
+            int selectedRow = tblPersonas.getSelectedRow();
+            pst.setInt(6, Integer.parseInt(String.valueOf(tblPersonas.getValueAt(selectedRow, 0))));
+
+            pst.executeUpdate();
+            mensajeOK("Registro Actualizado");
+            updateDB();
+            limpiar();
+            deshabilitar();
+
+        } catch (ClassNotFoundException e) {
+            java.util.logging.Logger.getLogger(FrmPersonas.class.getName()).log(java.util.logging.Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
+        } catch (SQLException e) {
+            java.util.logging.Logger.getLogger(FrmPersonas.class.getName()).log(java.util.logging.Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void tblPersonasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPersonasMouseClicked
+        // TODO add your handling code here:
+        int selectedRow = tblPersonas.getSelectedRow();
+
+        txtNombre.setText(String.valueOf(tblPersonas.getValueAt(selectedRow, 1)));
+        txtDNI.setText(String.valueOf(tblPersonas.getValueAt(selectedRow, 2)));
+        txtTelefono.setText(String.valueOf(tblPersonas.getValueAt(selectedRow, 3)));
+        cboCiudad.setSelectedItem(String.valueOf(tblPersonas.getValueAt(selectedRow, 4)));
+        cboProfesion.setSelectedItem(String.valueOf(tblPersonas.getValueAt(selectedRow, 5)));
+
+        habilitar();
+    }//GEN-LAST:event_tblPersonasMouseClicked
 //===========================================FIN EVENTOS ==================================
 
     /**
