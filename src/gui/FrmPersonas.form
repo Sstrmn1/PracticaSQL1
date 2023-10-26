@@ -227,9 +227,12 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Eliminar"/>
           </Properties>
+<<<<<<< HEAD
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEliminarActionPerformed"/>
           </Events>
+=======
+>>>>>>> d6396abd45f6535bf6a6f2e6dbb5ab4e4976cceb
         </Component>
         <Component class="javax.swing.JButton" name="btnCanelar">
           <Properties>

@@ -173,11 +173,14 @@ public class FrmPersonas extends javax.swing.JFrame {
         });
 
         btnEliminar.setText("Eliminar");
+<<<<<<< HEAD
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
             }
         });
+=======
+>>>>>>> d6396abd45f6535bf6a6f2e6dbb5ab4e4976cceb
 
         btnCanelar.setText("Cancelar");
         btnCanelar.addActionListener(new java.awt.event.ActionListener() {
@@ -405,6 +408,7 @@ public class FrmPersonas extends javax.swing.JFrame {
 
         habilitar();
     }//GEN-LAST:event_tblPersonasMouseClicked
+<<<<<<< HEAD
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
@@ -424,6 +428,8 @@ public class FrmPersonas extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
+=======
+>>>>>>> d6396abd45f6535bf6a6f2e6dbb5ab4e4976cceb
 //===========================================FIN EVENTOS ==================================
 
     /**
